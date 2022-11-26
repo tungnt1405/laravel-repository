@@ -66,7 +66,8 @@ class MakeRepositoryCommand extends CommandGenerator
     protected function getOptions(): array
     {
         return [
-            ['interface', 'i', InputOption::VALUE_NONE, 'Flag to create associated Interface', null]
+            ['interface', 'i', InputOption::VALUE_NONE, 'Flag to create associated Interface', null],
+            ['model', 'm', InputOption::VALUE_NONE, 'Flag to create associated Model', null],
         ];
     }
 
@@ -120,6 +121,17 @@ class MakeRepositoryCommand extends CommandGenerator
     protected function getInterfaceName(): string
     {
         return $this->getRepositoryName() . "Interface";
+    }
+
+    /**
+     * Return Model name for this repository class
+     * getInterfaceName
+     *
+     * @return string
+     */
+    protected function getModelName(): string
+    {
+        return preg_replace('/repository/i', '', $this->getRepositoryName());
     }
 
 
@@ -194,7 +206,13 @@ class MakeRepositoryCommand extends CommandGenerator
     protected function getStubFilePath(): string
     {
         if ($this->option('interface') === true) {
-            $stub = '/stubs/repository-interface.stub';
+            if ($this->option('model') === true) {
+                $stub = '/stubs/repository-model-interface.stub';
+            } else {
+                $stub = '/stubs/repository-interface.stub';
+            }
+        } elseif ($this->option('model') === true) {
+            $stub = '/stubs/repository-model.stub';
         } else {
             $stub = '/stubs/repository.stub';
         }
@@ -215,7 +233,8 @@ class MakeRepositoryCommand extends CommandGenerator
             'CLASS_NAMESPACE' => $this->getClassNamespace(),
             'INTERFACE_NAMESPACE' => $this->getInterfaceNamespace() . '\\' . $this->getInterfaceNameWithoutNamespace(),
             'CLASS' => $this->getRepositoryNameWithoutNamespace(),
-            'INTERFACE' => $this->getInterfaceNameWithoutNamespace()
+            'INTERFACE' => $this->getInterfaceNameWithoutNamespace(),
+            'MODEL' => $this->getModelName(),
         ]))->render();
     }
 
@@ -273,7 +292,6 @@ class MakeRepositoryCommand extends CommandGenerator
 
                 $this->info("Created : {$interfacePath}");
             }
-
         } catch (\Exception $e) {
 
             $this->error("File : {$e->getMessage()}");
@@ -282,7 +300,5 @@ class MakeRepositoryCommand extends CommandGenerator
         }
 
         return 0;
-
     }
-
 }
