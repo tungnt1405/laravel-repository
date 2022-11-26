@@ -12,8 +12,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Tungnt\\LaravelRepository\\": "src/",
-            "classmap": ["src/"]
+            "Tungnt\\LaravelRepository\\": "src/"
         }
     },
     "authors": [
