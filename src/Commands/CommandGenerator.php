@@ -39,7 +39,7 @@ abstract class CommandGenerator extends Command
      */
     public function getRepositoryNamespaceFromConfig(): string
     {
-        return config('laravel-more-command.repository-namespace') ?? 'App';
+        return config('repository.repository-namespace') ?? 'App';
     }
 
 
@@ -49,7 +49,7 @@ abstract class CommandGenerator extends Command
      */
     public function getServiceNamespaceFromConfig(): string
     {
-        return config('laravel-more-command.service-namespace') ?? 'App';
+        return config('repository.service-namespace') ?? 'App';
     }
 
     /**
