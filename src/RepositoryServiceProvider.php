@@ -2,6 +2,7 @@
 namespace Tungnt\LaravelRepository;
 
 use Illuminate\Support\ServiceProvider;
+use Tungnt\LaravelRepository\Commands\MakeRepositoryCommand;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -13,17 +14,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-            CreateRepositoryCommand::class,
-            CreateTraitCommand::class,
-            CreateServiceCommand::class,
-            CreateBladeCommand::class,
-            ClearLogCommand::class,
-
-            // For nWidart/laravel-modules:
-            CreateModuleRepositoryCommand::class,
-            CreateModuleTraitCommand::class,
-            CreateModuleServiceCommand::class,
-            CreateModuleBladeCommand::class
+            MakeRepositoryCommand::class,
         ]);
     }
 
@@ -34,6 +25,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__ . '/../config/repository.php' => config_path('repository.php'),
+        ], 'config');
     }
 }
