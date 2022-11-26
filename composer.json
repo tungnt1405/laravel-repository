@@ -3,9 +3,17 @@
     "description": "Create a Repository using Artisan CLI",
     "type": "library",
     "license": "MIT",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tungnt\\LaravelRepository\\RepositoryServiceProvider"
+            ]
+        }
+    },
     "autoload": {
         "psr-4": {
-            "Tungnt\\LaravelRepository\\": "src/"
+            "Tungnt\\LaravelRepository\\": "src/",
+            "classmap": ["src/"]
         }
     },
     "authors": [
