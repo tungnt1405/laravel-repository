@@ -1,0 +1,19 @@
+{
+    "name": "tungnt/laravel-repository",
+    "description": "Create a Repository using Artisan CLI",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tungnt\\LaravelRepository\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "tungnt1405",
+            "email": "ntt140520.bk@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
