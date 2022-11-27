@@ -140,6 +140,6 @@ class FileGenerator
         if (!$this->filesystem->exists($path)) {
             return $this->filesystem->put($path, $this->getContents());
         }
-        throw new \Exception('File already exists!');
+        throw new \Exception('File already exists!' . PHP_EOL . $path);
     }
 }

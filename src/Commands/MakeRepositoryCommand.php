@@ -362,7 +362,7 @@ class MakeRepositoryCommand extends CommandGenerator
         if ($this->option('resource') == true) {
             $controllerPath = str_replace('\\', '/', $this->controllerDestinationPath());
 
-            if (!$this->laravel['files']->isDirectory($dir = dirname($interfacePath))) {
+            if (!$this->laravel['files']->isDirectory($dir = dirname($controllerPath))) {
                 $this->laravel['files']->makeDirectory($dir, 0777, true);
             }
 

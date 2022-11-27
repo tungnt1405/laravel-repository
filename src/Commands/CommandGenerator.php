@@ -146,11 +146,7 @@ abstract class CommandGenerator extends Command
      */
     public function getControllerNamespace(): string
     {
-        $extra = str_replace(array($this->getClass() . 'Controller', '/'), array('', '\\'), $this->argument($this->argumentName) . 'Controller');
-
         $namespace = $this->getDefaultControllerNamespace();
-
-        $namespace .= '\\' . $extra;
 
         $namespace = str_replace('/', '\\', $namespace);
 
