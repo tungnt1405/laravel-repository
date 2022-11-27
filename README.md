@@ -1,6 +1,6 @@
 # Laravel Repository
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
+![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](https://github.com/tungnt1405/laravel-repository/blob/main/LICENSE)
 
 Repository setup inspired by the theanik/laravel-more-command package. This package is an extended, adjusted (but entirely independent) version of that, with its own interfaces.
