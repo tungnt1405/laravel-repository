@@ -259,7 +259,7 @@ class UserController extends Controller
 }
 ```
 
-## Service
+## Make Service
 
 You can create a new Service class by artisan cli
 ``` bash
