@@ -153,7 +153,7 @@ class MakeRepositoryCommand extends CommandGenerator
      */
     protected function getControllerName(): string
     {
-        return preg_replace('/repository/i', '', class_basename($this->getRepositoryName())) . "Controller";
+        return preg_replace('/repository/i', '', $this->getRepositoryName()) . "Controller";
     }
 
 
@@ -321,7 +321,7 @@ class MakeRepositoryCommand extends CommandGenerator
     {
         return (new GenerateFile(__DIR__ . "/stubs/controller-repo.stub", [
             'CLASS_NAMESPACE' => $this->getControllerNamespace(),
-            'CLASS_CONTROLLER' => $this->getControllerName(),
+            'CLASS_CONTROLLER' => class_basename($this->getControllerName()),
             'INTERFACE' => $this->getInterfaceNameWithoutNamespace(),
             'INTERFACE_NAMESPACE' => $this->getInterfaceNamespace() . '\\' . $this->getInterfaceNameWithoutNamespace(),
             'REPO' => strtolower($this->getModelName()) . 'Repo',
