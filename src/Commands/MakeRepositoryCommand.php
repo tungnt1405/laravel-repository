@@ -68,6 +68,7 @@ class MakeRepositoryCommand extends CommandGenerator
         return [
             ['interface', 'i', InputOption::VALUE_NONE, 'Flag to create associated Interface', null],
             ['model', 'm', InputOption::VALUE_NONE, 'Flag to create associated Model', null],
+            ['resource', 'resource', InputOption::VALUE_NONE, 'Flag to create associated Model, Controller, Interface', null],
         ];
     }
 
@@ -84,6 +85,16 @@ class MakeRepositoryCommand extends CommandGenerator
         if (Str::contains(strtolower($repository), 'repository') === false) {
             $repository .= 'Repository';
         }
+
+        $changeRepo = explode('/', $repository);
+        foreach ($changeRepo as $key => $change) {
+            if ($change == end($changeRepo)) {
+                $changeRepo[$key] = ucfirst($change);
+            }
+            continue;
+        }
+
+        $repository = implode('/', $changeRepo);
 
         return $repository;
     }
@@ -131,7 +142,18 @@ class MakeRepositoryCommand extends CommandGenerator
      */
     protected function getModelName(): string
     {
-        return preg_replace('/repository/i', '', $this->getRepositoryName());
+        return preg_replace('/repository/i', '', class_basename($this->getRepositoryName()));
+    }
+
+    /**
+     * Return controller name for this repository class
+     * getInterfaceName
+     *
+     * @return string
+     */
+    protected function getControllerName(): string
+    {
+        return preg_replace('/repository/i', '', class_basename($this->getRepositoryName())) . "Controller";
     }
 
 
@@ -144,6 +166,17 @@ class MakeRepositoryCommand extends CommandGenerator
     protected function interfaceDestinationPath(): string
     {
         return app_path() . $this->resolveNamespace() . "/Repositories/Interfaces" . '/' . $this->getInterfaceName() . '.php';
+    }
+
+    /**
+     * Return destination path for controler file publish
+     * interfaceDestinationPath
+     *
+     * @return string
+     */
+    protected function controllerDestinationPath(): string
+    {
+        return app_path() . $this->resolveNamespace() . "/Http/Controllers" . '/' . $this->getControllerName() . '.php';
     }
 
 
@@ -196,6 +229,19 @@ class MakeRepositoryCommand extends CommandGenerator
         return "$configNamespace\\Repositories\\Interfaces";
     }
 
+    /**
+     * Set Default controlelr Namespace
+     * Override CommandGenerator class method
+     * getDefaultControllerNamespace
+     *
+     * @return string
+     */
+    public function getDefaultControllerNamespace(): string
+    {
+        $configNamespace = $this->getRepositoryNamespaceFromConfig();
+        return "$configNamespace\\Http\\Controllers";
+    }
+
 
     /**
      * Return stub file path
@@ -205,16 +251,20 @@ class MakeRepositoryCommand extends CommandGenerator
      */
     protected function getStubFilePath(): string
     {
-        if ($this->option('interface') === true) {
-            if ($this->option('model') === true) {
-                $stub = '/stubs/repository-model-interface.stub';
-            } else {
-                $stub = '/stubs/repository-interface.stub';
-            }
-        } elseif ($this->option('model') === true) {
-            $stub = '/stubs/repository-model.stub';
+        if ($this->option('resource') === true) {
+            $stub = '/stubs/repository-resource.stub';
         } else {
-            $stub = '/stubs/repository.stub';
+            if ($this->option('interface') === true) {
+                if ($this->option('model') === true) {
+                    $stub = '/stubs/repository-model-interface.stub';
+                } else {
+                    $stub = '/stubs/repository-interface.stub';
+                }
+            } elseif ($this->option('model') === true) {
+                $stub = '/stubs/repository-model.stub';
+            } else {
+                $stub = '/stubs/repository.stub';
+            }
         }
 
         return $stub;
@@ -247,9 +297,37 @@ class MakeRepositoryCommand extends CommandGenerator
      */
     protected function getInterfaceTemplateContents(): string
     {
-        return (new GenerateFile(__DIR__ . "/stubs/interface.stub", [
-            'CLASS_NAMESPACE' => $this->getInterfaceNamespace(),
-            'INTERFACE' => $this->getInterfaceNameWithoutNamespace()
+        if ($this->option('resource') == true) {
+            return (new GenerateFile(__DIR__ . "/stubs/interface-resource.stub", [
+                'CLASS_NAMESPACE' => $this->getInterfaceNamespace(),
+                'INTERFACE' => $this->getInterfaceNameWithoutNamespace(),
+                'MODEL' => $this->getModelName()
+            ]))->render();
+        } else {
+            return (new GenerateFile(__DIR__ . "/stubs/interface.stub", [
+                'CLASS_NAMESPACE' => $this->getInterfaceNamespace(),
+                'INTERFACE' => $this->getInterfaceNameWithoutNamespace()
+            ]))->render();
+        }
+    }
+
+    /**
+     * Generate controller file content
+     * getInterfaceTemplateContents
+     *
+     * @return string
+     */
+    protected function getControllerTemplateContents(): string
+    {
+        return (new GenerateFile(__DIR__ . "/stubs/controller-repo.stub", [
+            'CLASS_NAMESPACE' => $this->getControllerNamespace(),
+            'CLASS_CONTROLLER' => $this->getControllerName(),
+            'INTERFACE' => $this->getInterfaceNameWithoutNamespace(),
+            'INTERFACE_NAMESPACE' => $this->getInterfaceNamespace() . '\\' . $this->getInterfaceNameWithoutNamespace(),
+            'REPO' => strtolower($this->getModelName()) . 'Repo',
+            'REPO_VARIABLE' => '$' . strtolower($this->getModelName()) . 'Repo',
+            'RETURN' => '$' . strtolower($this->getModelName()),
+            'RESULT' => strtolower($this->getModelName()),
         ]))->render();
     }
 
@@ -270,7 +348,7 @@ class MakeRepositoryCommand extends CommandGenerator
         $contents = $this->getTemplateContents();
 
         // For Interface
-        if ($this->option('interface') == true) {
+        if ($this->option('interface') == true || $this->option('resource') == true) {
             $interfacePath = str_replace('\\', '/', $this->interfaceDestinationPath());
 
             if (!$this->laravel['files']->isDirectory($dir = dirname($interfacePath))) {
@@ -280,17 +358,36 @@ class MakeRepositoryCommand extends CommandGenerator
             $interfaceContents = $this->getInterfaceTemplateContents();
         }
 
+        // For Controller
+        if ($this->option('resource') == true) {
+            $controllerPath = str_replace('\\', '/', $this->controllerDestinationPath());
+
+            if (!$this->laravel['files']->isDirectory($dir = dirname($interfacePath))) {
+                $this->laravel['files']->makeDirectory($dir, 0777, true);
+            }
+
+            $controllerContents = $this->getControllerTemplateContents();
+        }
+
         try {
             (new FileGenerator($path, $contents))->generate();
 
             $this->info("Created : {$path}");
 
             // For Interface
-            if ($this->option('interface') === true) {
+            if ($this->option('interface') === true || $this->option('resource') == true) {
 
                 (new FileGenerator($interfacePath, $interfaceContents))->generate();
 
                 $this->info("Created : {$interfacePath}");
+            }
+
+            // For Controller
+            if ($this->option('resource') == true) {
+
+                (new FileGenerator($controllerPath, $controllerContents))->generate();
+
+                $this->info("Created : {$controllerPath}");
             }
         } catch (\Exception $e) {
 

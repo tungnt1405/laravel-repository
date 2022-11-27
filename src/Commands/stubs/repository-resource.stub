@@ -1,0 +1,19 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use App\Repositories\BaseRepository;
+use $INTERFACE_NAMESPACE$;
+
+class $CLASS$ extends BaseRepository implements $INTERFACE$
+{
+    public function getModel()
+    {
+        return \App\Models\$MODEL$::class;
+    }
+
+    public function get$MODEL$()
+    {
+        return [];
+    }
+}

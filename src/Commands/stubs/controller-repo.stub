@@ -1,0 +1,114 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Http\Request;
+use $INTERFACE_NAMESPACE$;
+
+class $CLASS_CONTROLLER$ extends Controller
+{
+    /**
+     * @var $INTERFACE$|\App\Repositories\Repository
+     */
+    protected $REPO_VARIABLE$;
+
+    public function __construct($INTERFACE$ $RETURN$)
+    {
+        $this->$REPO$ = $RETURN$;
+    }
+
+
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function index()
+    {
+        $RETURN$ = $this->$REPO$->getAll();
+
+        return view('', ['$RESULT$' => $RETURN$]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->all();
+
+        //... Validation here
+
+        $RETURN$ = $this->$REPO$->create($data);
+
+        return redirect()->route('');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $RETURN$ = $this->$REPO$->find($id);
+
+        return view('', ['$RESULT$' => $RETURN$]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $data = $request->all();
+
+        //... Validation here
+
+        $RETURN$ = $this->$REPO$->update($id, $data);
+
+        return redirect()->route('');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $this->$REPO$->delete($id);
+        
+        return redirect()->route('');
+    }
+}

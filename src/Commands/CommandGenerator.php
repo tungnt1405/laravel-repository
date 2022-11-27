@@ -75,6 +75,17 @@ abstract class CommandGenerator extends Command
         return '';
     }
 
+    /**
+     * Return the default namespace type for interface
+     * getDefaultInterfaceNamespace
+     *
+     * @return string
+     */
+    public function getDefaultControllerNamespace(): string
+    {
+        return '';
+    }
+
 
     /**
      * Return a class name
@@ -127,6 +138,25 @@ abstract class CommandGenerator extends Command
         return trim($namespace, '\\');
     }
 
+    /**
+     * Generate interface namespace dynamically
+     * getControllerNamespace
+     *
+     * @return string
+     */
+    public function getControllerNamespace(): string
+    {
+        $extra = str_replace(array($this->getClass() . 'Controller', '/'), array('', '\\'), $this->argument($this->argumentName) . 'Controller');
+
+        $namespace = $this->getDefaultControllerNamespace();
+
+        $namespace .= '\\' . $extra;
+
+        $namespace = str_replace('/', '\\', $namespace);
+
+        return trim($namespace, '\\');
+    }
+
 
     /**
      * checkModuleExists
@@ -141,5 +171,4 @@ abstract class CommandGenerator extends Command
         }
         return true;
     }
-
 }

@@ -1,9 +1,11 @@
 <?php
+
 namespace Tungnt\LaravelRepository\Support;
 
 use Illuminate\Filesystem\Filesystem;
 
-class FileGenerator{
+class FileGenerator
+{
 
     /**
      * path
@@ -140,5 +142,4 @@ class FileGenerator{
         }
         throw new \Exception('File already exists!');
     }
-
 }

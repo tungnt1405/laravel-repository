@@ -1,4 +1,5 @@
 <?php
+
 namespace Tungnt\LaravelRepository;
 
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,10 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/repository.php' => config_path('repository.php'),
-        ], 'config');
+        ], 'tungnt/config');
+        $this->publishes([
+            __DIR__ . '/Repositories/Interfaces/RepositoryInterface.php' => app_path('Repositories/Interfaces/RepositoryInterface.php'),
+            __DIR__ . '/Repositories/BaseRepository.php' => app_path('Repositories/BaseRepository.php'),
+        ], 'tungnt/Repositories');
     }
 }
