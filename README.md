@@ -259,6 +259,18 @@ class UserController extends Controller
 }
 ```
 
+## Service
+
+You can create a new Service class by artisan cli
+``` bash
+php artisan make:service your-service
+```
+
+or
+``` bash
+php artisan make:service your-service -i
+```
+
 ## License
 
 The MIT License (MIT). Please see [License](LICENSE) for more information.
