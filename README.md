@@ -65,7 +65,7 @@ php artisan make:repository User/User
 ```
 The above will create a **Repositories** directory inside the **App** directory.\
 
-__Create a repository with Interface.__\
+__Create a repository with Interface.__
 ``` bash
 php artisan make:repository UserRepository -i
 ```
@@ -78,7 +78,7 @@ php artisan make:repository User/UserRepository -i
 Here you need to put extra `-i` flag.
 The above will create a **Repositories** directory inside the **App** directory.
 
-__Create repository with Model.__\
+__Create repository with Model.__
 
 ``` bash
 php artisan make:repository UserRepository -m
@@ -96,7 +96,7 @@ Or you can create repository with Model and Interface:
 php artisan make:repository User/UserRepository -mi
 ```
 
-__Create repository resource.__\
+__Create repository resource.__
 
 ``` bash
 php artisan make:repository UserRepository --resource
@@ -105,7 +105,7 @@ php artisan make:repository UserRepository --resource
 __An Example of created repository class:__
 
 File repository
-`` php
+``` php
 <?php
 
 namespace App\Repositories;
