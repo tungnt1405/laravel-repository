@@ -4,6 +4,7 @@ namespace Tungnt\LaravelRepository;
 
 use Illuminate\Support\ServiceProvider;
 use Tungnt\LaravelRepository\Commands\MakeRepositoryCommand;
+use Tungnt\LaravelRepository\Commands\MakeServiceCommand;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->commands([
             MakeRepositoryCommand::class,
+            MakeServiceCommand::class,
         ]);
     }
 
@@ -32,6 +34,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/Repositories/Interfaces/RepositoryInterface.php' => app_path('Repositories/Interfaces/RepositoryInterface.php'),
             __DIR__ . '/Repositories/BaseRepository.php' => app_path('Repositories/BaseRepository.php'),
+            __DIR__ . '/Services/Interfaces/ServiceInterface.php' => app_path('Services/Interfaces/ServiceInterface.php'),
+            __DIR__ . '/Services/AbstractService.php' => app_path('Services/AbstractService.php'),
         ], 'tungnt/Repositories');
     }
 }

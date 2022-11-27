@@ -1,0 +1,10 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use App\Services\Interfaces\ServiceInterface;
+
+interface $INTERFACE$ extends ServiceInterface
+{
+    public function get$REPO$();
+}

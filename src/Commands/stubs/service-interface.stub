@@ -1,0 +1,19 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use App\Services\AbstractService;
+use $INTERFACE_NAMESPACE$;
+
+class $CLASS$ extends AbstractService implements $INTERFACE$
+{
+    public function getRepository()
+    {
+        return \App\Repositories\$REPOSITORY$::class;
+    }
+
+    public function get$REPO$()
+    {
+        return [];
+    }
+}
