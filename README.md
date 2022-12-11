@@ -14,7 +14,7 @@ composer require tungnt/laravel-repository --dev
 Or add the following to your composer.json's require-dev section and composer update
 ``` json 
 "require-dev": {
-    "tungnt/laravel-repository": "^1.0.3"
+    "tungnt/laravel-repository": "^1.0.4"
 }
 ```
 
