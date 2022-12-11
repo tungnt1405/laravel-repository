@@ -7,6 +7,10 @@ use $INTERFACE_NAMESPACE$;
 
 class $CLASS$ extends BaseRepository implements $INTERFACE$
 {
+    public function __construct(){
+        parent::__construct();
+    }
+
     public function getModel()
     {
         return \App\Models\$MODEL$::class;
